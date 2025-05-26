@@ -5,5 +5,5 @@
  * @author icalc
  *
  */
-module _ALinkedListGenerics {
+module _ACircleLinkedListGenerics {
 }
