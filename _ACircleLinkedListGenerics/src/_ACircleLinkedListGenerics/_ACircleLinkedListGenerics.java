@@ -52,26 +52,28 @@ public class _ACircleLinkedListGenerics {
 		}
 	}
 	public static void main(String[] args) {	
-		CircleLinkedList<Trabalhador> func = new CircleLinkedList<Trabalhador>();
-		
-		bancoDeDados(func);
-		System.out.println(func);
-		
-		CircleLinkedList<Trabalhador> contratados = new CircleLinkedList<Trabalhador>();
-				
-		contratados.addLast(new Trabalhador(11, 23, 'M', 3900.0f, "Programador Jr."));
-		contratados.addLast(new Trabalhador(12, 29, 'F', 4500.0f, "Secretária Bilíngue"));		
-		contratados.addLast(new Trabalhador(13, 35, 'M', 6000.0f, "Programador Pleno"));		
-		contratados.addLast(new Trabalhador(14, 53, 'M', 5000.0f, "Programador Jr."));
-		contratados.addLast(new Trabalhador(15, 63, 'F', 8000.0f, "Analista Sr."));
-		contratados.addLast(new Trabalhador(16, 56, 'M', 9000.0f, "Analista Sr."));
-				
-		func.concatena(contratados);
-		System.out.println(func);
-		
-		demiteFuncionarios(func);
-		System.out.println(func);
-		
-	}
+    CircleLinkedList<Integer> lista = new CircleLinkedList<>();
 
+    // Adicionando elementos à lista circular
+    for (int i = 1; i <= 10; i++) {
+        lista.addLast(i);
+    }
+
+    System.out.println("Lista original:");
+    System.out.println(lista);
+
+    // Testando remoção de posições ímpares
+    lista.remove(1);
+    System.out.println("Após remover posições ímpares:");
+    System.out.println(lista);
+
+    // Recriando a lista para testar remoção de posições pares
+    lista.clear();
+    for (int i = 1; i <= 10; i++) {
+        lista.addLast(i);
+    }
+    lista.remove(2);
+    System.out.println("Após remover posições pares:");
+    System.out.println(lista);
+}
 }

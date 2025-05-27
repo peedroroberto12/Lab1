@@ -1,0 +1,109 @@
+package _ADLLGenerics;
+
+public class DLLDesc<T extends Comparable<T>> {
+    private Node<T> head;
+    private int size;
+
+    public DLLDesc() {
+        this.head = null;
+        this.size = 0;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    // Insere em ordem decrescente
+    public boolean insertDescending(T data) {
+        Node<T> novoNo = new Node<T>(data, null, null);
+        if (isEmpty()) {
+            head = novoNo;
+            novoNo.setRight(novoNo);
+            novoNo.setLeft(novoNo);
+        } else {
+            Node<T> pAnda = head, pAnt = null;
+            while (pAnda.getRight() != head && pAnda.getData().compareTo(data) > 0) {
+                pAnt = pAnda;
+                pAnda = pAnda.getRight();
+            }
+            if (pAnt == null && pAnda.getData().compareTo(data) < 0) {
+                // Inserção antes do head
+                novoNo.setLeft(head.getLeft());
+                head.getLeft().setRight(novoNo);
+                head.setLeft(novoNo);
+                novoNo.setRight(head);
+                head = novoNo;
+            } else if (pAnda.getData().compareTo(data) < 0 && pAnt != null) {
+                // Inserção no meio
+                pAnt.getRight().setLeft(novoNo);
+                novoNo.setRight(pAnda);
+                pAnt.setRight(novoNo);
+                novoNo.setLeft(pAnt);
+            } else {
+                // Inserção no final
+                pAnda.getRight().setLeft(novoNo);
+                novoNo.setRight(pAnda.getRight());
+                pAnda.setRight(novoNo);
+                novoNo.setLeft(pAnda);
+            }
+        }
+        size++;
+        return true;
+    }
+
+    // Mostra a lista em ordem decrescente
+    public void showDescending() {
+        if (isEmpty()) {
+            System.out.println("Lista vazia!");
+        } else {
+            System.out.print("Lista: [ ");
+            Node<T> pAnda = head;
+            int count = 0;
+            while (count < size) {
+                System.out.print(pAnda.getData() + " ");
+                pAnda = pAnda.getRight();
+                count++;
+            }
+            System.out.println("]");
+        }
+    }
+
+    // Mostra a lista em ordem crescente (para conferência)
+    public void showAscending() {
+        if (isEmpty()) {
+            System.out.println("Lista vazia!");
+        } else {
+            System.out.print("Lista: [ ");
+            Node<T> pAnda = head.getLeft();
+            int count = 0;
+            while (count < size) {
+                System.out.print(pAnda.getData() + " ");
+                pAnda = pAnda.getLeft();
+                count++;
+            }
+            System.out.println("]");
+        }
+    }
+
+    // Outros métodos (concat, inverte, etc.) podem ser adaptados de acordo com a necessidade
+
+    // Exemplo de main para teste
+    public static void main(String[] args) {
+        DLLDesc<Integer> lista = new DLLDesc<>();
+        lista.insertDescending(5);
+        lista.insertDescending(2);
+        lista.insertDescending(8);
+        lista.insertDescending(1);
+        lista.insertDescending(10);
+
+        System.out.println("Lista em ordem decrescente:");
+        lista.showDescending();
+
+        System.out.println("Lista em ordem crescente (para conferência):");
+        lista.showAscending();
+    }
+}

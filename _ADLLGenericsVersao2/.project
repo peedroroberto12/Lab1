@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>_ACircleLinkedListGenerics</name>
+	<name>_ADLLGenericsVersao2</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1748340242696</id>
+			<id>1748340863471</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

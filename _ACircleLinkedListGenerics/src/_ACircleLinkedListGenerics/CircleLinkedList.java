@@ -1,5 +1,7 @@
 package _ACircleLinkedListGenerics;
 
+import java.util.LinkedList;
+
 //Classe CircleLinkedList<T>: encarregada de manipular a estrutura de dados
 //lista ligada circular genérica.
 //
@@ -289,6 +291,48 @@ public class CircleLinkedList<T> {
 	      return pAnda.getData();
 	    }
 	}	
+
+
+	public void invert() {
+		if (isEmpty() || size == 1) return;
+
+	    CircleLinkedList<T> laux = new CircleLinkedList<>();
+	    Node<T> pAnda = head;
+	    int count = 0;
+	    while (count < size) {
+	        laux.addFirst(pAnda.getData());
+	        pAnda = pAnda.getProx();
+	        count++;
+	    }
+	    clear();
+	    pAnda = laux.head;
+	    count = 0;
+	    while (count < laux.size) {
+	        this.addLast(pAnda.getData());
+	        pAnda = pAnda.getProx();
+	        count++;
+	    }
+	}	
+
+	//questao 6 lista
+	// inverte(): inverte a lista circular, ou seja, o primeiro elemento passa a ser o último
+		public void inverte() {
+		// Lista Ligada Auxiliar
+		CircleLinkedList<T> lAux = new CircleLinkedList<T>();
+		
+		Node<T> pAnda = getHead();  // Ponteiro que anda na lista original
+		// Percorre a lista original, remove um elemento e insere no cabeça da lista
+		//  auxiliar. Ao final, o conteúdo da lista auxiliar é o inverso da original.
+		while (pAnda != null) { 
+			lAux.insertHead(pAnda.getData());
+			pAnda = pAnda.getProx();
+		}
+		clear();  // Limpa os nós da lista original
+		head = lAux.getHead(); // Atribui a lista auxiliar como sendo a nova original
+	}
+	
+
+	//questao 9 lista
 	// concatena(CircleLinkedList<T> lista): concatena a lista circular
 	//  passada como parâmetro ao final da lista circular original
 	public void concatena(CircleLinkedList<T> lista) {
@@ -297,7 +341,6 @@ public class CircleLinkedList<T> {
 		tail = lista.getTail();
 		size +=lista.getSize();
 	}
-	
 	@Override
 	public String toString() {
 		
@@ -321,5 +364,123 @@ public class CircleLinkedList<T> {
     
 	    return sb.toString();
 	}
-	
+
+	//questao 13 lista
+	// merge(CircleLinkedList<T> lista): mescla duas listas circulares
+	public void merge(CircleLinkedList<T> lista){
+		Node<T> panda1 = this.getHead();
+		Node<T> panda2 = lista.getHead();
+
+		CircleLinkedList<T> laux = new CircleLinkedList<T>();
+
+		int count1 = 0, count2 = 0;
+		int size1 = this.getSize();
+		int size2 = lista.getSize();
+
+		// Intercala os elementos das duas listas
+		while (count1 < size1 && count2 < size2) {
+			laux.insertTail(panda1.getData());
+			panda1 = panda1.getProx();
+			count1++;
+
+			laux.insertTail(panda2.getData());
+			panda2 = panda2.getProx();
+			count2++;
+		}
+
+		// Se ainda restarem elementos na lista 1
+		while (count1 < size1) {
+			laux.insertTail(panda1.getData());
+			panda1 = panda1.getProx();
+			count1++;
+		}
+
+		// Se ainda restarem elementos na lista 2
+		while (count2 < size2) {
+			laux.insertTail(panda2.getData());
+			panda2 = panda2.getProx();
+			count2++;
+		}
+
+		clear(); // Limpa a lista original
+		head = laux.getHead(); // Atribui a lista auxiliar como sendo a nova original
+		tail = laux.getTail();
+		size = laux.getSize(); // Atualiza o tamanho da lista original
+	}
+
+
+
+		public static void main(String[] args) {
+    CircleLinkedList<Integer> lista = new CircleLinkedList<>();
+
+    lista.addLast(1);
+    lista.addLast(2);
+    lista.addLast(3);
+    lista.addLast(4);
+
+    System.out.println("Lista original:");
+    System.out.println(lista);
+
+    lista.invert();
+
+    System.out.println("Lista invertida:");
+    System.out.println(lista);
+}
+
+//exerc 16 
+//Fazer um método que remove da lista LinkedList todos os Nodes que estão nas posições pares
+//ou ímpares. Um parâmetro “int tipo” indica a forma de remoção, sendo 1 para ímpar e 2 para
+//par. Protótipo: public void remove(int tipo)
+
+public void remove(int tipo) {
+    if (isEmpty() || tipo < 1 || tipo > 2) return;
+
+    int originalSize = size;
+    Node<T> pAnda = head;
+    Node<T> pAnt = tail;
+    int contador = 1;
+
+    for (int i = 0; i < originalSize; i++) {
+        Node<T> proximo = pAnda.getProx();
+        boolean remover = (tipo == 1 && contador % 2 != 0) || (tipo == 2 && contador % 2 == 0);
+
+        if (remover) {
+            if (size == 1) {
+                head = tail = null;
+            } else if (pAnda == head) {
+                head = pAnda.getProx();
+                tail.setProx(head);
+            } else if (pAnda == tail) {
+                tail = pAnt;
+                tail.setProx(head);
+            } else {
+                pAnt.setProx(pAnda.getProx());
+            }
+            size--;
+        } else {
+            pAnt = pAnda;
+        }
+        pAnda = proximo;
+        contador++;
+    }
+}
+//Fazer um método que atualiza o conteúdo (dado) de um Node da lista CircleLinkedList que se
+//encontra em uma posição fornecida como parâmetro. Retorna verdadeiro se atualização
+//realizada ou falso, caso contrário. Protótipo: public boolean atualiza(int pos, T data).
+
+public boolean atualiza(int pos, T data) {
+	if (isEmpty() || pos <= 0 || pos > size) return false;
+
+	Node<T> pAnda = head;
+	int contador = 1;
+
+	while (contador < pos) {
+		pAnda = pAnda.getProx();
+		contador++;
+	}
+
+	pAnda.setData(data);
+	return true;
+}
+
 }
